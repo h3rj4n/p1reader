@@ -3,12 +3,15 @@ p1reader
 
 P1 Port power/gas reader for our home
 
-
+```
 usage: p1reader.py [-h] [-c COMPORT] [-l LOGINTERVAL] [-o {screen,csv,db}]
                    [-pvo {Y,N}] [-pvoapi PVOUTPUTAPIKEY]
                    [-pvosys PVOUTPUTSYSTEMID] [-s SERVER] [-u USER]
                    [-p PASSWORD] [-d DATABASE] [-v {2,3,4}]
+```
 
+
+```
 P1 Datalogger
 
 optional arguments:
@@ -36,3 +39,4 @@ optional arguments:
                         DSMR COM-port setting version, default=3'
 
 GPL licensed.
+```

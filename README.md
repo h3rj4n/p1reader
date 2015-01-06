@@ -59,7 +59,7 @@ P1 telegram ontvangen op: 2015-01-06 08:56:30
 Meter fabrikant: Kaifa
 Meter informatie: /KFM5KAIFA-METER
  0. 2. 8 - DSMR versie: 40
-96. 1. 1 - Meternummer Elektriciteit: 4530303039303030303031343934383133
+96. 1. 1 - Meternummer Elektriciteit: xxxx
  1. 8. 1 - Meterstand Elektriciteit levering (T1/Laagtarief): 1457.359 kWh
  1. 8. 2 - Meterstand Elektriciteit levering (T2/Normaaltarief): 1615.575 kWh
  2. 8. 1 - Meterstand Elektriciteit teruglevering (T1/Laagtarief): 0.000 kWh
@@ -94,7 +94,7 @@ Meter informatie: /KFM5KAIFA-METER
 96.13. 0 - Bericht tekst: 
 MBus Meterkanaal: 1
 24. 1. 0 - Productsoort: 3 (Gas)
-91. 1. 0 - Meternummer Gas: 4730303136353631323031343933353133
+91. 1. 0 - Meternummer Gas: xxxx
 24. 2. 1 - Tijdstip meterstand Gas levering: 2015-01-06 08:00:00
 24. 2. 1 - Meterstand Gas levering: 822.382 m3
 24. 4. 0 - Actuele kleppositie Gas: 1

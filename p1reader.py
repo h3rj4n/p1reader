@@ -1,4 +1,4 @@
-#!python3
+#!/usr/bin/python3
 #
 # Original works from J. van der Linde
 # Copyright (c) 2011/2012/2013/2014 J. van der Linde

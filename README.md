@@ -100,7 +100,10 @@ MBus Meterkanaal: 1
 24. 4. 0 - Actuele kleppositie Gas: 1
 Einde P1 telegram
 ```
+
 Requirements
+========
+
 ```
 apt-get install python3-serial python3-mysql.connector
 apt-get install mysql-server mysql-client git-core
@@ -113,4 +116,9 @@ mysql> flush privileges;
 mysql> use domotica
 mysql> source sql
 mysql> quit
+```
+
+To put all p1 information into a mysql database
+```
+root@home:/home/rroethof/p1reader# ./p1reader.py -c 1 -l 1 -o db -s localhost -u domotica -p xxx -d domotica -v 4
 ```

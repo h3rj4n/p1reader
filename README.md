@@ -122,3 +122,9 @@ To put all p1 information into a mysql database
 ```
 root@home:/home/rroethof/p1reader# ./p1reader.py -c 1 -l 1 -o db -s localhost -u domotica -p xxx -d domotica -v 4
 ```
+
+To run the script directly after a reboot
+```
+vi /etc/rc.local
+/usr/bin/screen -d -m -S p1reader /root/p1reader/p1reader.py -c 1 -l 1 -o db -s localhost -u domotica -p xxx -d domotica -v 4
+```

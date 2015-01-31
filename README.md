@@ -100,3 +100,17 @@ MBus Meterkanaal: 1
 24. 4. 0 - Actuele kleppositie Gas: 1
 Einde P1 telegram
 ```
+Requirements
+```
+apt-get install python3-serial python3-mysql.connector
+apt-get install mysql-server mysql-client git-core
+```
+
+```
+mysql> create database domotica;
+mysql> grant all privileges on domotica.* to domotica@localhost identified by 'xxx';
+mysql> flush privileges;
+mysql> use domotica
+mysql> source sql
+mysql> quit
+```

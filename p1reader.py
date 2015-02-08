@@ -3,6 +3,8 @@
 # Original works from J. van der Linde
 # Copyright (c) 2011/2012/2013/2014 J. van der Linde
 #
+# Fixes for large scale use and DSMR v4.0 by Ronny Roethof
+#
 # Dependend on 
 # - Python 3.x 
 # - PySerial 2.5

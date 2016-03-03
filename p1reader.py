@@ -329,6 +329,7 @@ def db_p1_telegram():
          str(p1_meterreading_in_2) + "\',\'" + \
          str(p1_meterreading_out_1) + "\',\'" +\
          str(p1_meterreading_out_2) + "\',\'" + \
+		 str(p1_current_tariff) + "\',\'" + \
          str(p1_current_power_in) + "\',\'" + \
          str(p1_current_power_out) + "\',\'" + \
          p1_channel_1.timestamp + "\',\'" + \

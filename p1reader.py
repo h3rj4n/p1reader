@@ -347,7 +347,7 @@ def db_p1_telegram():
         show_error()
         print ("Fout bij het openen van / schrijven naar database %s / %s. P1 Telegram wordt gelogd in csv-bestand."  % (p1_mysql_host, p1_mysql_db))      
         csv_p1_telegram()
-    sys.exit()
+    #sys.exit() # Could use this when running the script from a Cronjob
     return    
 
 ######################

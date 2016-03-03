@@ -329,7 +329,6 @@ def db_p1_telegram():
          str(p1_meterreading_in_2) + "\',\'" + \
          str(p1_meterreading_out_1) + "\',\'" +\
          str(p1_meterreading_out_2) + "\',\'" + \
-         str(p1_current_tariff) + "\',\'" + \
          str(p1_current_power_in) + "\',\'" + \
          str(p1_current_power_out) + "\',\'" + \
          p1_channel_1.timestamp + "\',\'" + \
@@ -347,6 +346,7 @@ def db_p1_telegram():
         show_error()
         print ("Fout bij het openen van / schrijven naar database %s / %s. P1 Telegram wordt gelogd in csv-bestand."  % (p1_mysql_host, p1_mysql_db))      
         csv_p1_telegram()
+    sys.exit()
     return    
 
 ######################
@@ -750,6 +750,9 @@ p1_prev_meterreading_out_1 = 0
 p1_prev_meterreading_out_2 = 0
 p1_prev_meterreading_in_1 = 0
 p1_prev_meterreading_in_2 = 0
+p1_current_threshold = 0
+p1_unit_current_threshold = 0
+p1_current_switch_position = 0
 pvo_volume_initialize = False
 pvo_prev_date=""
 
@@ -1255,7 +1258,6 @@ while 1:
         elif p1_line[0:1] == "!":
 #in DSMR 4 telegrams there might be a checksum following the "!".
 #eg. !141B
-#CRC16 value calculated over the preceding characters in the data message (from â€œ/â€ to â€œ!â€ using the polynomial: x16+x15+x2+1).
 #the checksum is discarded
      
 #End of P1 telegram

@@ -19,6 +19,7 @@ import serial
 import datetime
 import csv
 import os
+import json
 import locale
 import socket
 socket.setdefaulttimeout(30)
@@ -29,6 +30,11 @@ try:
     import mysql.connector
 except ImportError:
     MySQL_loaded=False
+MQTT_loaded=True
+try:
+    import paho.mqtt.client as mqtt
+except ImportError:
+    MQTT_loaded=False
 from time import sleep
 import argparse
 #####################################################################
@@ -348,7 +354,37 @@ def db_p1_telegram():
         print ("Fout bij het openen van / schrijven naar database %s / %s. P1 Telegram wordt gelogd in csv-bestand."  % (p1_mysql_host, p1_mysql_db))      
         csv_p1_telegram()
     #sys.exit() # Could use this when running the script from a Cronjob
-    return    
+    return
+
+def on_publish(client, userdata, mid):
+    print("Message send")
+    return
+
+##########
+# Output to remote MQTT
+##########
+def mqtt_p1_telegram():
+    if (MQTT_loaded == False):
+        print('MQTT Lib is niet geladen')
+    
+    try:
+        payload = {}
+        payload['kwh'] = p1_current_power_in
+        
+        mqttc = mqtt.Client()
+        
+        if (mqtt_auth != None):
+            mqttc.username_pw_set(mqtt_user, mqtt_passwd)
+        
+        mqttc.on_publish = on_publish
+        
+        mqttc.connect(mqtt_server, 1883, 60)
+        mqttc.publish('home/power', json.dumps(payload))
+        mqttc.disconnect()
+    except:
+        show_error();
+        print("Is de paho-mqtt library aanwezig?")
+    return
 
 ######################
 #PVOutput.org output #
@@ -598,7 +634,7 @@ print ("Control-C to abort")
 parser = argparse.ArgumentParser(prog=progname, description='P1 Datalogger', epilog="GPL licensed.")
 parser.add_argument("-c", "--comport", help="COM-port identifier", type=int)
 parser.add_argument("-l", "--loginterval", help="Log frequency in 10 second-units, default=1", default=1, type=int)
-parser.add_argument("-o", "--output", help="Output mode, default='screen'", default='screen', choices=['screen', 'csv', 'db'])
+parser.add_argument("-o", "--output", help="Output mode, default='screen'", default='screen', choices=['screen', 'csv', 'db', 'mqtt'])
 parser.add_argument("-pvo", "--pvoutput", help="Output to PVOutput ==EXPERIMENTAL==, default='N'", default='N', choices=['Y', 'N'])
 parser.add_argument("-pvoapi", "--pvoutputapikey", help="PVOutput.org API key")
 parser.add_argument("-pvosys", "--pvoutputsystemid", help="PVOutput.org system id", type=int)
@@ -607,6 +643,7 @@ parser.add_argument("-u", "--user", help="Database user, default='root'", defaul
 parser.add_argument("-p", "--password", help="Database user password, default='password'", default='password')
 parser.add_argument("-d", "--database", help="Database name, default=p1'", default='p1')
 parser.add_argument("-v", "--version", help="DSMR COM-port setting version, default=3'", choices=['2','3','4'], default='3')
+parser.add_argument("-a", "--auth", help="MQTT Authentication enabled, use user / password options, default=None", default=None)
 args = parser.parse_args()
 
 if args.comport == None:
@@ -663,7 +700,18 @@ if (output_mode == "db" or import_db) and MySQL_loaded:
 if (output_mode == "db" or import_db) and not MySQL_loaded:
    print("%s: warning: MySQL Connector/Python not found. Output mode 'db' not allowed. Output mode 'csv' used instead." % progname)
    output_mode = "csv"
-   import_db = False   
+   import_db = False
+if (output_mode == "mqtt") and MQTT_loaded:
+    mqtt_server = args.server
+    mqtt_auth = args.auth
+    mqtt_user = args.user
+    mqtt_passwd = args.password
+    print("Settings used:")
+    print(" - Server  : %s" % mqtt_server)
+    print(" - Auth    : %s" % mqtt_auth)
+    if (mqtt_auth != None):
+        print(" - User    : %s" % mqtt_user)
+        print(" - Password: %s" % mqtt_passwd)
 #################################################################################################################################################
         
 #Set COM port config
@@ -1287,6 +1335,8 @@ while 1:
                 if output_mode=="csv": csv_p1_telegram()
 #Output to database
                 if output_mode=="db": db_p1_telegram()
+#Output to MQTT
+                if output_mode=="mqtt": mqtt_p1_telegram()
 #Output to PVOutput.org
                 if pvo_output: pvo_p1_telegram()
 ################################################################

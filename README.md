@@ -4,10 +4,10 @@ p1reader
 P1 Port power/gas reader for our home
 
 ```
-usage: p1reader.py [-h] [-c COMPORT] [-l LOGINTERVAL] [-o {screen,csv,db}]
+usage: p1reader.py [-h] [-c COMPORT] [-l LOGINTERVAL] [-o {screen,csv,db,mqtt}]
                    [-pvo {Y,N}] [-pvoapi PVOUTPUTAPIKEY]
                    [-pvosys PVOUTPUTSYSTEMID] [-s SERVER] [-u USER]
-                   [-p PASSWORD] [-d DATABASE] [-v {2,3,4}]
+                   [-p PASSWORD] [-d DATABASE] [-v {2,3,4}] [-a {true}]
 ```
 
 
@@ -20,7 +20,7 @@ optional arguments:
                         COM-port identifier
   -l LOGINTERVAL, --loginterval LOGINTERVAL
                         Log frequency in 10 second-units, default=1
-  -o {screen,csv,db}, --output {screen,csv,db}
+  -o {screen,csv,db,mqtt}, --output {screen,csv,db,mqtt}
                         Output mode, default='screen'
   -pvo {Y,N}, --pvoutput {Y,N}
                         Output to PVOutput ==EXPERIMENTAL==, default='N'
@@ -29,14 +29,16 @@ optional arguments:
   -pvosys PVOUTPUTSYSTEMID, --pvoutputsystemid PVOUTPUTSYSTEMID
                         PVOutput.org system id
   -s SERVER, --server SERVER
-                        Database server, default='localhost'
-  -u USER, --user USER  Database user, default='root'
+                        Database/MQTT server, default='localhost'
+  -u USER, --user USER  Database/MQTT user, default='root'
   -p PASSWORD, --password PASSWORD
-                        Database user password, default='password'
+                        Database/MQTT user password, default='password'
   -d DATABASE, --database DATABASE
                         Database name, default=p1'
   -v {2,3,4}, --version {2,3,4}
                         DSMR COM-port setting version, default=3'
+  -a {true}, --auth {true}
+                        When defined, MQTT will add authentication based on the user and password values.
 
 GPL licensed.
 ```
@@ -128,3 +130,15 @@ To run the script directly after a reboot
 vi /etc/rc.local
 /usr/bin/screen -d -m -S p1reader /root/p1reader/p1reader.py -c 1 -l 1 -o db -s localhost -u domotica -p xxx -d domotica -v 4
 ```
+
+Docker
+==========
+
+This repo is used in a Docker instance. See:
+
+* https://github.com/h3rj4n/docker-p1reader
+
+Changelog
+==========
+
+* Added basic support for MQTT messaging

@@ -360,6 +360,9 @@ def on_publish(client, userdata, mid):
     print("Message send")
     return
 
+def on_log(client, userdata, level, buf):
+    return
+
 ##########
 # Output to remote MQTT
 ##########
@@ -369,7 +372,21 @@ def mqtt_p1_telegram():
     
     try:
         payload = {}
+        # Add the current load the the payload.
         payload['kwh'] = p1_current_power_in
+        
+        # Add the low pricing reading.
+        payload['t1_kwh'] = p1_meterreading_in_1
+        # Add the regular pricing reading.
+        payload['t2_kwh'] = p1_meterreading_in_2
+        
+        # Try to add the gass value as well.
+        channellist = [p1_channel_1, p1_channel_2, p1_channel_3, p1_channel_4]
+        for channel in channellist:
+            
+            # Only add the gass reading.
+            if channel.id == 3:
+                payload['gass'] = channel.meterreading
         
         mqttc = mqtt.Client()
         
@@ -377,8 +394,9 @@ def mqtt_p1_telegram():
             mqttc.username_pw_set(mqtt_user, mqtt_passwd)
         
         mqttc.on_publish = on_publish
+        mqttc.on_log = on_log
         
-        mqttc.connect(mqtt_server, 1883, 60)
+        mqttc.connect(mqtt_server, 1883)
         mqttc.publish('home/power', json.dumps(payload))
         mqttc.disconnect()
     except:
